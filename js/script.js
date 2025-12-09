@@ -14,6 +14,8 @@ function dropdown() {
             .attr("value",d => d) 
     })
 
+    d3.select('#region').property("value", regionVar);
+
 }
 
 function createVisual (data) {
@@ -95,8 +97,8 @@ function init() {
     d3.csv("data/population-by-age.csv")
     .then(data => {
         console.log(data);
-        createVisual(data);
         dropdown();
+        createVisual(data);
     });
 }
 
