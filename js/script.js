@@ -1,13 +1,27 @@
 function createVisual (data) {
 
     const width = 1000;
-    const height = 800;
+    const height = 700;
+    const radius = 500 / 2;
     const innerRadius = 168;
 
     const x = d3.scaleBand()
       .domain(data.map(d => d.name))
       .range([0, 2 * Math.PI])
       .align(0);
+  
+    const arc = d3.arc()
+        .innerRadius(radius * 0.67)
+        .outerRadius(radius - 1);
+  
+    const pie = d3.pie()
+        .padAngle(1 / radius)
+        .sort(null)
+        .value(5);
+  
+    const color = d3.scaleOrdinal()
+        .domain(data.map(d => d.name))
+        .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length).reverse());
   
     const svg = d3.select("#vis")
         .append("svg")
@@ -17,6 +31,21 @@ function createVisual (data) {
         .attr("style", "max-width: 100%; height: auto;");
   
         svg.append("g")
+        .selectAll()
+        .data(pie(data))
+        .join("path")
+            .attr("fill", "white")
+            .attr("d", arc)
+            .on('mouseover', function (event, d) {
+                d3.select(this)
+                    .style('fill', '#d3d3d3');
+            }).on('mouseout', function (event, d) {
+                d3.select(this)
+                    .style('fill', "white");
+            });
+  
+
+        svg.append("g")
           .selectAll()
           .data(x.domain())
           .join("g")
@@ -25,13 +54,26 @@ function createVisual (data) {
               translate(${innerRadius},0)
             `)
             .call(g => g.append("line")
-                .attr("x2", 190)
+                .attr("x2", 100)
                 .attr("stroke", "#000"))
             .call(g => g.append("text")
                 .attr("transform", d => (x(d) + x.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) < Math.PI
                     ? "rotate(10)translate(0,16)"
                     : "rotate(0)translate(0,20)")
                 .text(d => d));
+
+
+        svg.append("g")
+            .append("text")
+            .attr("text-anchor", "middle")
+            .attr("y", "30")
+            .text("of metrics are stronger than the");
+
+        svg.append("g")
+           .append("text")
+           .attr("text-anchor", "middle")
+           .attr("y", "50")
+           .text("average of other Regions");
 }
 
 
