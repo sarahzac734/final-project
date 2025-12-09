@@ -19,10 +19,6 @@ function createVisual (data) {
         .sort(null)
         .value(5);
   
-    const color = d3.scaleOrdinal()
-        .domain(data.map(d => d.name))
-        .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length).reverse());
-  
     const svg = d3.select("#vis")
         .append("svg")
         .attr("width", width)
@@ -38,7 +34,7 @@ function createVisual (data) {
             .attr("d", arc)
             .on('mouseover', function (event, d) {
                 d3.select(this)
-                    .style('fill', '#d3d3d3');
+                    .style('fill', '#dddddd');
             }).on('mouseout', function (event, d) {
                 d3.select(this)
                     .style('fill', "white");
