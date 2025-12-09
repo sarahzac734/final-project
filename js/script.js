@@ -1,3 +1,21 @@
+
+let regionVar = 'Americas'
+
+const options = ['Americas', 'East Asia & Pacific', 'Europe & Central Asia', 'Middle East & North Africa', 'South Asia', 'Sub-Saharan Africa'];
+
+function dropdown() {
+    d3.selectAll('.variable')
+    .each(function() {
+            d3.select(this).selectAll('myOptions')
+            .data(options)
+            .enter()
+            .append('option')
+            .text(d => d)
+            .attr("value",d => d) 
+    })
+
+}
+
 function createVisual (data) {
 
     const width = 1000;
@@ -78,6 +96,7 @@ function init() {
     .then(data => {
         console.log(data);
         createVisual(data);
+        dropdown();
     });
 }
 
