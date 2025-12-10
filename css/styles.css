@@ -21,3 +21,13 @@
 #detail {
     margin-left: 80px
 }
+
+#tooltip {
+    position: absolute;
+    padding: 10px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    pointer-events: none;
+    font-size: 12px;
+}

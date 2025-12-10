@@ -1,0 +1,67 @@
+Metric,region,Value
+sustainable_economic_development_assessment,Americas,57.30
+GDP,Americas,"1,012.1"
+health_expenditure_per_person,Americas,1127.9
+unemployment,Americas,6.6
+political_rights_score ,Americas,33
+civil_liberties_score ,Americas,50
+judicial_effectiveness_score,Americas,44.5
+government_integrity_score,Americas,32.6
+financial_freedom_score,Americas,60
+government_expenditure,Americas,38.5
+seats_held_by_women,Americas,39
+sustainable_economic_development_assessment,South Asia,35.30
+GDP,South Asia,838.8
+health_expenditure_per_person,South Asia,41.9
+unemployment,South Asia,4.1
+political_rights_score ,South Asia,19
+civil_liberties_score ,South Asia,26
+judicial_effectiveness_score,South Asia,32.6
+government_integrity_score,South Asia,21.2
+financial_freedom_score,South Asia,30
+government_expenditure,South Asia,13.9
+seats_held_by_women,South Asia,20
+sustainable_economic_development_assessment,East Asia & Pacific,60.80
+GDP,East Asia & Pacific,4.5
+health_expenditure_per_person,East Asia & Pacific,1164.5
+unemployment,East Asia & Pacific,11.4
+political_rights_score ,East Asia & Pacific,38
+civil_liberties_score ,East Asia & Pacific,58
+judicial_effectiveness_score,East Asia & Pacific,54.4
+government_integrity_score,East Asia & Pacific,53.8
+financial_freedom_score,East Asia & Pacific,60
+government_expenditure,East Asia & Pacific,45
+seats_held_by_women,East Asia & Pacific,20
+sustainable_economic_development_assessment,Europe & Central Asia,59.90
+GDP,Europe & Central Asia,179.1
+health_expenditure_per_person,Europe & Central Asia,351
+unemployment,Europe & Central Asia,0.5
+political_rights_score ,Europe & Central Asia,6
+civil_liberties_score ,Europe & Central Asia,15
+judicial_effectiveness_score,Europe & Central Asia,57.3
+government_integrity_score,Europe & Central Asia,42
+financial_freedom_score,Europe & Central Asia,10
+government_expenditure,Europe & Central Asia,41.7
+seats_held_by_women,Europe & Central Asia,35
+sustainable_economic_development_assessment,Middle East & North Africa,44.10
+GDP,Middle East & North Africa,36.6
+health_expenditure_per_person,Middle East & North Africa,494.2
+unemployment,Middle East & North Africa,3.7
+political_rights_score ,Middle East & North Africa,5
+civil_liberties_score ,Middle East & North Africa,12
+judicial_effectiveness_score,Middle East & North Africa,83.4
+government_integrity_score,Middle East & North Africa,77.3
+financial_freedom_score,Middle East & North Africa,60
+government_expenditure,Middle East & North Africa,31.2
+seats_held_by_women,Middle East & North Africa,23
+sustainable_economic_development_assessment,Sub-Saharan Africa,20.40
+GDP,Sub-Saharan Africa,24.4
+health_expenditure_per_person,Sub-Saharan Africa,29.7
+unemployment,Sub-Saharan Africa,5.8
+political_rights_score ,Sub-Saharan Africa,4
+civil_liberties_score ,Sub-Saharan Africa,14
+judicial_effectiveness_score,Sub-Saharan Africa,24.1
+government_integrity_score,Sub-Saharan Africa,23.1
+financial_freedom_score,Sub-Saharan Africa,40
+government_expenditure,Sub-Saharan Africa,17.7
+seats_held_by_women,Sub-Saharan Africa,15

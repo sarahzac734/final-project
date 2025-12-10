@@ -1,8 +1,10 @@
 
 let regionVar = 'Americas'
+let theData = [];
 
 const options = ['Americas', 'East Asia & Pacific', 'Europe & Central Asia', 'Middle East & North Africa', 'South Asia', 'Sub-Saharan Africa'];
 
+const metrics = ['sustainable_economic_development_assessment', 'GDP', 'health_expenditure_per_person', 'unemployment', 'political_rights_score', 'civil_liberties_score', 'judicial_effectiveness_score', 'government_integrity_score', 'financial_freedom_score', 'government_expenditure', 'seats_held_by_women' ];
 function dropdown() {
     d3.selectAll('.variable')
     .each(function() {
@@ -19,14 +21,21 @@ function dropdown() {
 }
 
 function createVisual (data) {
-
-    const width = 1000;
-    const height = 700;
+    const width = 1500;
+    const height = 1000;
     const radius = 500 / 2;
     const innerRadius = 168;
 
+    const xScale = d3.scaleLinear()
+    .domain([0, 20])
+    .range([0, radius])
+
+const yScale = d3.scaleLinear()
+    .domain([0, 100])
+    .range([radius - 250, 0]);
+
     const x = d3.scaleBand()
-      .domain(data.map(d => d.name))
+      .domain(metrics.map(d => d))
       .range([0, 2 * Math.PI])
       .align(0);
   
@@ -48,7 +57,7 @@ function createVisual (data) {
   
         svg.append("g")
         .selectAll()
-        .data(pie(data))
+        .data(pie(metrics))
         .join("path")
             .attr("fill", "white")
             .attr("d", arc)
@@ -70,15 +79,40 @@ function createVisual (data) {
               translate(${innerRadius},0)
             `)
             .call(g => g.append("line")
-                .attr("x2", 100)
+                .attr("x2", 200)
                 .attr("stroke", "#000"))
+            .each(function(d) {
+                let newData = data.filter( x=> x.metric === d);
+                d3.select(this)
+                .selectAll("circle")
+                .data(newData)
+                .join("circle")
+                  .attr("r", 5)
+                  .attr('cx', d => xScale(d.value) / 100)
+                  .attr('cy', d => yScale(d.value) / 100)
+                  .style('stroke', 'grey')
+                 .style('fill', 'white')
+                                    .on('mouseover', function(event,y) {
+                                        d3.select('#tooltip')
+                                                        .style("display", 'block')
+                                                        .html(
+                                                            `Metric: ${y.metric}<br/>
+                                                            Region: ${y.region}<br>
+                                                            ${y.value}`)
+                                                        .style("left", (event.pageX + 20) + "px")
+                                                        .style("top", (event.pageY - 28) + "px");
+                                    }).on('mouseout', function (event, d) {
+                                        d3.select('#tooltip')
+                                            .style('display', 'none');
+                                    });
+
+            })
             .call(g => g.append("text")
                 .attr("transform", d => (x(d) + x.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) < Math.PI
                     ? "rotate(10)translate(0,16)"
                     : "rotate(0)translate(0,20)")
                 .text(d => d));
-
-
+        
         svg.append("g")
             .append("text")
             .attr("text-anchor", "middle")
@@ -94,8 +128,16 @@ function createVisual (data) {
 
 
 function init() {
-    d3.csv("data/population-by-age.csv")
+    d3.csv("data/data_final.csv", function(d) {
+        return {
+            metric: d.Metric,
+            region: d.region,
+            value: +d.Value
+           
+        }
+    })
     .then(data => {
+        theData = data;
         console.log(data);
         dropdown();
         createVisual(data);
