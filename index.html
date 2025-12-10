@@ -8,13 +8,32 @@
         <link rel="stylesheet" href="css/styles.css">
     </head>
     <body>
-        <div class="container">
-            <h1>Final Project</h1>
-            <div id="tooltip" style="display:none"></div>
-            <div id="vis"></div>
+        <div class="page">
+            <header class="controls">
+                <div class="title-row">
+                    <h1>How do the</h1>
+                    <div class="select-wrapper">
+                        <select id="region-select" aria-label="Select a region"></select>
+                    </div>
+                    <h1>compare to the other Regions across these metrics?</h1>
+                </div>
+                <p class="note">Hover a circle for values or a metric wedge to focus it.</p>
+            </header>
+
+            <main class="content">
+                <aside class="sidebar">
+                    <h2>All metrics</h2>
+                    <p>Hover over a circle or click on a metric to view details. Metrics where the selected region leads are grouped together and highlighted.</p>
+                </aside>
+                <div class="visual-container">
+                    <div id="vis"></div>
+                </div>
+            </main>
+            <div id="tooltip" class="tooltip" style="display:none"></div>
         </div>
 
         <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
         <script src="js/script.js"></script>
     </body>
 </html>
