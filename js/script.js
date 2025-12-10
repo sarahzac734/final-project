@@ -238,8 +238,8 @@ function createVisual(data) {
         .outerRadius(radius + 22);
 
     const highlightArc = d3.arc()
-        .innerRadius(radius + 8)
-        .outerRadius(radius + 18);
+        .innerRadius(radius - 5)
+        .outerRadius(radius + 5);
 
     const valueToRadius = (metricId, value) => {
         const { min, max } = metricExtents[metricId];
@@ -259,6 +259,16 @@ function createVisual(data) {
 
     const arcPath = arcLayer.append("path")
         .attr("class", "arc-highlight");
+
+    // Gray background ring for hover effect
+    const outerRingBg = arcLayer.append("circle")
+        .attr("class", "outer-ring-bg")
+        .attr("r", radius);
+
+    // Purple arc for hovered metric
+    const hoverArc = arcLayer.append("path")
+        .attr("class", "hover-arc")
+        .style("opacity", 0);
 
     function isStronger(metric, selectedRegion) {
         const selectedVal = +regionData.get(selectedRegion)[metric.id];
@@ -285,14 +295,21 @@ function createVisual(data) {
         return { order: [...strong, ...weak, ...missing], strongCount: strong.length, totalConsidered: strong.length + weak.length };
     }
 
+    // Store current state for hover handlers
+    let currentOrder = [];
+    let currentAngleScale = null;
+
     function update(selectedRegion) {
         regionSelect.property("value", selectedRegion);
         const { order, strongCount, totalConsidered } = orderMetrics(selectedRegion);
 
-        const angleScale = d3.scaleLinear()
+        // Update shared state
+        currentOrder = order;
+        currentAngleScale = d3.scaleLinear()
             .domain([0, order.length])
             .range([startAngle, startAngle + Math.PI * 2]);
 
+        const angleScale = currentAngleScale;
         const transition = svg.transition().duration(750);
 
         const wedges = wedgeLayer.selectAll("path")
@@ -301,17 +318,34 @@ function createVisual(data) {
         wedges.join(
             enter => enter.append("path")
                 .attr("class", "metric-wedge")
-                .on("mouseenter", (event, d) => {
-                    d3.select(event.currentTarget).classed("active", true);
-                })
-                .on("mouseleave", (event) => {
-                    d3.select(event.currentTarget).classed("active", false);
-                })
-        ).transition(transition)
-            .attr("d", (d, i) => wedgeArc({
-                startAngle: angleScale(i),
-                endAngle: angleScale(i + 1)
-            }));
+        )
+        .on("mouseenter", function(event, d) {
+            const i = currentOrder.findIndex(m => m.id === d.id);
+            const wedgeAngle = (Math.PI * 2) / currentOrder.length;
+            const halfWedge = wedgeAngle / 2;
+            const centerAngle = currentAngleScale(i); // The divider line angle
+            outerRingBg.classed("visible", true);
+            hoverArc
+                .attr("d", highlightArc({
+                    startAngle: centerAngle - halfWedge,
+                    endAngle: centerAngle + halfWedge
+                }))
+                .style("opacity", 1);
+        })
+        .on("mouseleave", function(event) {
+            outerRingBg.classed("visible", false);
+            hoverArc.style("opacity", 0);
+        })
+        .transition(transition)
+            .attr("d", (d, i) => {
+                const wedgeAngle = (Math.PI * 2) / order.length;
+                const halfWedge = wedgeAngle / 2;
+                const centerAngle = angleScale(i);
+                return wedgeArc({
+                    startAngle: centerAngle - halfWedge,
+                    endAngle: centerAngle + halfWedge
+                });
+            });
 
         const axes = axisLayer.selectAll("line")
             .data(order, d => d.id);
@@ -362,9 +396,15 @@ function createVisual(data) {
                 .attr("r", d => d.region === selectedRegion ? 8 : 5)
                 .on("mouseenter", (event, d) => {
                     const metric = d.metric;
-                    const cleanLabel = metric.label.replace(/\s*\(.*?\)/, "").trim();
+                    // Convert label to title case for display
+                    const cleanLabel = metric.label
+                        .replace(/\s*\(.*?\)/, "")
+                        .trim()
+                        .split(" ")
+                        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                        .join(" ");
                     let valStr = formatValue(metric, d.value);
-                    if (metric.label.includes("(%)") || metric.label.includes("pct")) {
+                    if (metric.label.includes("(%)") || metric.label.includes("pct") || metric.label.includes("%")) {
                         if (!valStr.includes("%")) valStr += "%";
                     }
 
