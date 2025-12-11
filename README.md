@@ -6,7 +6,7 @@
 
 You can also run the visualization using Live Server:
 
-1) Open this folder in Visual Studio Code
-2) On the bottom right hand corner of Visual Studio Code, click Go Live
+1) Open this folder in Visual Studio Code.
+2) On the bottom right hand corner of Visual Studio Code, click Go Live.
 
 `data/assignment 3 & 4 dataset (1).xlsx`
