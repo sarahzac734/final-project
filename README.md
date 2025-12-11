@@ -1,4 +1,4 @@
-# How to run?
+# How to run the visualization?
 
 1) Open this folder in a terminal.  
 2) Start a local server: `python3 -m http.server 8000`  
